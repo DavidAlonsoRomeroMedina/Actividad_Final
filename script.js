@@ -6,168 +6,93 @@ const k12 = document.getElementById('k12');
 const k21 = document.getElementById('k21');
 const k22 = document.getElementById('k22');
 const btnEncriptar = document.getElementById('encriptar');
-const resultado = document.getElementById('resultado');
 const btnDesencriptar = document.getElementById('desencriptar');
+const resultado = document.getElementById('resultado');
 
+function mod(n) { return (n % 26 + 26) % 26; }
 
-// Actualizar contador de caracteres
+// Contador de caracteres
 mensaje.addEventListener('input', () => {
-    const len = mensaje.value.length;
-    charCount.textContent = `${len}/30`;
+    charCount.textContent = `${mensaje.value.length}/30`;
     mostrarMatrizMensaje();
 });
 
-// Mostrar matriz del mensaje
+// Mostrar matriz numérica del mensaje
 function mostrarMatrizMensaje() {
     const texto = mensaje.value.toUpperCase().replace(/[^A-Z]/g, '');
-    
-    if (texto.length === 0) {
-        matrizMensaje.textContent = 'Escribe un mensaje primero...';
-        return;
-    }
-    
-    const valores = texto.split('').map(char => char.charCodeAt(0) - 65);
-    
-    // Agrupar en pares
-    let matriz = '[';
-    for (let i = 0; i < valores.length; i += 2) {
-        if (i > 0) matriz += ' ';
-        matriz += '[' + valores[i];
-        if (i + 1 < valores.length) {
-            matriz += ', ' + valores[i + 1];
-        } else {
-            matriz += ', ' + (valores.length % 2 === 0 ? '' : '23'); // Padding con 'X'
-        }
-        matriz += ']';
-    }
-    matriz += ']';
-    
-    matrizMensaje.textContent = matriz;
+    if (!texto) return matrizMensaje.textContent = 'Escribe un mensaje primero...';
+
+    let valores = texto.split('').map(c => c.charCodeAt(0) - 65);
+    if (valores.length % 2 !== 0) valores.push(23); // X
+
+    let muestra = '[';
+    for (let i = 0; i < valores.length; i += 2)
+        muestra += `[${valores[i]}, ${valores[i+1]}] `;
+    matrizMensaje.textContent = muestra + ']';
 }
 
+// Inversa de la matriz clave
 function inversaClave(key) {
-    let det = (key[0][0] * key[1][1] - key[0][1] * key[1][0]) % 26;
-    det = (det + 26) % 26;
+    let det = mod(key[0][0] * key[1][1] - key[0][1] * key[1][0]);
+    if (det === 0) return null;
 
     let invDet = null;
-    for (let i = 0; i < 26; i++) {
-        if ((det * i) % 26 === 1) invDet = i;
-    }
-    if (invDet === null) return null;
+    for (let i = 1; i < 26; i++) if (mod(det * i) === 1) invDet = i;
+    if (invDet == null) return null;
 
-    let adj = [
-        [ key[1][1], -key[0][1] ],
-        [ -key[1][0], key[0][0] ]
+    return [
+        [mod(invDet * key[1][1]), mod(invDet * -key[0][1])],
+        [mod(invDet * -key[1][0]), mod(invDet * key[0][0])]
     ];
-
-    adj = adj.map(row => row.map(x => (x % 26 + 26) % 26));
-
-    let inv = [];
-    for (let i = 0; i < 2; i++) {
-        inv[i] = [];
-        for (let j = 0; j < 2; j++) {
-            inv[i][j] = (adj[i][j] * invDet) % 26;
-        }
-    }
-    return inv;
 }
 
-
-// Función de encriptación Hill
+// ENCRIPTAR
 btnEncriptar.addEventListener('click', () => {
-    // Validar inputs
     const key = [
-        [parseInt(k11.value) || 0, parseInt(k12.value) || 0],
-        [parseInt(k21.value) || 0, parseInt(k22.value) || 0]
+        [parseInt(k11.value), parseInt(k12.value)],
+        [parseInt(k21.value), parseInt(k22.value)]
     ];
-    
-    if (key[0][0] === 0 && key[0][1] === 0 && key[1][0] === 0 && key[1][1] === 0) {
-        resultado.textContent = 'Error: Ingresa una matriz clave válida';
-        resultado.classList.add('error');
-        return;
-    }
-    
+
     const texto = mensaje.value.toUpperCase().replace(/[^A-Z]/g, '');
-    
-    if (texto.length === 0) {
-        resultado.textContent = 'Error: Ingresa un mensaje';
-        resultado.classList.add('error');
-        return;
-    }
-    
-    // Calcular determinante
-    const det = (key[0][0] * key[1][1] - key[0][1] * key[1][0]) % 26;
-    
-    if (det === 0) {
-        resultado.textContent = 'Error: La matriz no es invertible (determinante = 0)';
-        resultado.classList.add('error');
-        return;
-    }
-    
-    // Convertir texto a números
-    let numeros = texto.split('').map(char => char.charCodeAt(0) - 65);
-    
-    // Agregar padding si es impar
-    if (numeros.length % 2 !== 0) {
-        numeros.push(23); // 'X'
-    }
-    
-    // Encriptar
-    let encriptado = '';
+    if (!texto) return resultado.textContent = 'Error: Ingresa un mensaje';
+
+    let numeros = texto.split('').map(c => c.charCodeAt(0) - 65);
+    if (numeros.length % 2 !== 0) numeros.push(23);
+
+    let salida = "";
     for (let i = 0; i < numeros.length; i += 2) {
-        const v1 = numeros[i];
-        const v2 = numeros[i + 1];
-        
-        const c1 = (key[0][0] * v1 + key[0][1] * v2) % 26;
-        const c2 = (key[1][0] * v1 + key[1][1] * v2) % 26;
-        
-        encriptado += String.fromCharCode(65 + c1);
-        encriptado += String.fromCharCode(65 + c2);
+        let c1 = mod(key[0][0]*numeros[i] + key[0][1]*numeros[i+1]);
+        let c2 = mod(key[1][0]*numeros[i] + key[1][1]*numeros[i+1]);
+        salida += String.fromCharCode(c1 + 65) + String.fromCharCode(c2 + 65);
     }
-    
-    resultado.classList.remove('error');
-    resultado.textContent = encriptado;
+    resultado.textContent = salida;
 });
 
-document.getElementById('toggleDarkMode').addEventListener('click', () => {
-  document.body.classList.toggle('dark-mode');
-});
-
+// DESENCRIPTAR
 btnDesencriptar.addEventListener('click', () => {
     const key = [
-        [parseInt(k11.value) || 0, parseInt(k12.value) || 0],
-        [parseInt(k21.value) || 0, parseInt(k22.value) || 0]
+        [parseInt(k11.value), parseInt(k12.value)],
+        [parseInt(k21.value), parseInt(k22.value)]
     ];
 
     const texto = mensaje.value.toUpperCase().replace(/[^A-Z]/g, '');
-
-    if (texto.length === 0) {
-        resultado.textContent = 'Error: Ingresa un mensaje encriptado';
-        resultado.classList.add('error');
-        return;
-    }
+    if (!texto) return resultado.textContent = 'Error: Ingresa un mensaje encriptado';
 
     const invKey = inversaClave(key);
-    if (!invKey) {
-        resultado.textContent = 'Error: La matriz no tiene inversa, no se puede desencriptar';
-        resultado.classList.add('error');
-        return;
-    }
+    if (!invKey) return resultado.textContent = 'Error: matriz no invertible. No se puede desencriptar.';
 
     let numeros = texto.split('').map(c => c.charCodeAt(0) - 65);
 
-    let desencriptado = '';
+    let salida = "";
     for (let i = 0; i < numeros.length; i += 2) {
-        const v1 = numeros[i];
-        const v2 = numeros[i + 1];
-
-        const p1 = (invKey[0][0] * v1 + invKey[0][1] * v2) % 26;
-        const p2 = (invKey[1][0] * v1 + invKey[1][1] * v2) % 26;
-
-        desencriptado += String.fromCharCode(65 + p1);
-        desencriptado += String.fromCharCode(65 + p2);
+        let p1 = mod(invKey[0][0]*numeros[i] + invKey[0][1]*numeros[i+1]);
+        let p2 = mod(invKey[1][0]*numeros[i] + invKey[1][1]*numeros[i+1]);
+        salida += String.fromCharCode(p1 + 65) + String.fromCharCode(p2 + 65);
     }
-
-    resultado.classList.remove('error');
-    resultado.textContent = desencriptado;
+    resultado.textContent = salida;
 });
+
+// Modo oscuro
+document.getElementById('toggleDarkMode').addEventListener('click', () =>
+    document.body.classList.toggle('dark-mode')
+);

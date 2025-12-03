@@ -1,0 +1,573 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: white;
+    max-width: 600px;
+    width: 100%;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #B4141E;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+h3 {
+    color: #B4141E;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.section {
+    margin-bottom: 25px;
+}
+
+label {
+    display: block;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 16px;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #2a5298;
+}
+
+.char-count {
+    text-align: right;
+    color: #666;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.matriz-display {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 4px;
+    border: 2px solid #e0e0e0;
+    min-height: 60px;
+    font-family: 'Courier New', monospace;
+    color: #333;
+    line-height: 1.8;
+}
+
+.matriz-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    max-width: 200px;
+}
+
+.matriz-input input {
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 18px;
+    text-align: center;
+    transition: border-color 0.3s;
+}
+
+.matriz-input input:focus {
+    outline: none;
+    border-color: #2a5298;
+}
+
+button {
+    width: 15%;
+    padding: 15px;
+    background: #2a5298;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    font-weight: 60;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin: 20px 0;
+}
+
+button:hover {
+    background: #1e3c72;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.resultado-box {
+    background: #f5f5f5;
+    padding: 20px;
+    border-radius: 4px;
+    border: 2px solid #e0e0e0;
+    min-height: 60px;
+    font-family: 'Courier New', monospace;
+    color: #333;
+    word-wrap: break-word;
+}
+
+.error {
+    color: #d32f2f;
+    background: #ffebee;
+    border-color: #d32f2f;
+}
+
+body.dark-mode {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+}
+
+body.dark-mode .container {
+  background-color: #2c2c2c;
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .result-box {
+  background-color: #333;
+  border-color: #555;
+}
+
+body.dark-mode button {
+  background-color: #556cd6;
+}
+
+body.dark-mode button:hover {
+  background-color: #4052b5;
+}
+
+/*  MODO OSCURO ACTUALIZADO */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #B4141E; /* color principal de texto */
+}
+
+body.dark-mode .container {
+  background-color: #2a2a2a;
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.05);
+  color: #B4141E;
+}
+
+body.dark-mode h1,
+body.dark-mode h2,
+body.dark-mode p,
+body.dark-mode label,
+body.dark-mode strong {
+  color: #B4141E; /* texto general en rojo vino */
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #333;
+  color: #B4141E;
+  border: 1px solid #555;
+}
+
+body.dark-mode .result-box {
+  background-color: #222;
+  border-color: #444;
+  color: #B4141E;
+}
+
+body.dark-mode .formula-original {
+  background-color: #3a1a1a;
+  border: 1px solid #B4141E;
+  color: #f2f2f2;
+}
+
+body.dark-mode .nota-didactica {
+  background-color: #3a3a3a;
+  border-left: 4px solid #B4141E;
+  color: #f2f2f2;
+}
+
+body.dark-mode table {
+  background-color: #2b2b2b;
+  color: #B4141E;
+  border-color: #555;
+}
+
+body.dark-mode table thead {
+  background-color: #3b0000;
+  color: #f2f2f2;
+}
+
+body.dark-mode table tbody tr:nth-child(even) {
+  background-color: #262626;
+}
+
+body.dark-mode table tbody tr:hover {
+  background-color: #3b0000;
+}
+
+body.dark-mode button {
+  background-color: #B4141E;
+  color: #fff;
+}
+
+body.dark-mode button:hover {
+  background-color: #8f1018;
+}
+
+.subtitulo {
+    text-align: center;
+    font-size: 1.05em;
+    color: #34495e;
+    margin-top: -10px;
+    margin-bottom: 30px;
+    font-style: italic;
+    letter-spacing: 0.5px;
+}
+
+/* Versión para modo oscuro */
+body.dark-mode .subtitulo {
+    color: #B4141E;
+}
+
+body {
+  background-color: #f2f9f2; /* verde muy claro */
+  color: #2e2e2e;
+}
+
+.container {
+  background-color: #ffffff;
+  border: 3px solid #b30000; /* borde rojo navideño */
+  box-shadow: 0 8px 16px rgba(0, 100, 0, 0.1);
+}
+
+h1 {
+  color: #b30000;
+  text-shadow: 2px 2px 4px #ffd700; /* brillo dorado */
+}
+
+button {
+  background-color: #006400; /* verde pino */
+  color: white;
+  border-radius: 8px;
+}
+
+button:hover {
+  background-color: #b30000; /* rojo al pasar */
+}
+
+.result-box {
+  border: 2px solid #b30000;
+  background-color: #fffdf5;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); /* dorado */
+}
+
+.container {
+  border-top: 8px solid #b30000;
+  border-bottom: 8px solid #006400;
+  border-radius: 16px;
+}
+
+h1 {
+  background: linear-gradient(to right, #b30000, #006400);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 1px 1px 2px #ffd700;
+}
+
+/*  Copos de nieve animados con CSS puro */
+.snowflakes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 9999;
+}
+
+.snowflake {
+  position: absolute;
+  top: -10px;
+  color: white;
+  font-size: 1.2em;
+  text-shadow: 0 0 5px #fff;
+  animation: fall linear infinite;
+  opacity: 0.9;
+}
+
+/* Animación de caída */
+@keyframes fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(100vh) rotate(360deg);
+  }
+}
+
+/* Distribución aleatoria de los copos */
+.snowflake:nth-child(1) { left: 5%; animation-duration: 10s; animation-delay: 0s; }
+.snowflake:nth-child(2) { left: 15%; animation-duration: 12s; animation-delay: 2s; }
+.snowflake:nth-child(3) { left: 25%; animation-duration: 8s; animation-delay: 1s; }
+.snowflake:nth-child(4) { left: 35%; animation-duration: 14s; animation-delay: 0s; }
+.snowflake:nth-child(5) { left: 45%; animation-duration: 11s; animation-delay: 3s; }
+.snowflake:nth-child(6) { left: 55%; animation-duration: 9s; animation-delay: 2s; }
+.snowflake:nth-child(7) { left: 65%; animation-duration: 13s; animation-delay: 1s; }
+.snowflake:nth-child(8) { left: 75%; animation-duration: 10s; animation-delay: 4s; }
+.snowflake:nth-child(9) { left: 85%; animation-duration: 12s; animation-delay: 2s; }
+.snowflake:nth-child(10) { left: 95%; animation-duration: 9s; animation-delay: 0s; }
+
+.snowflake {
+  text-shadow: 0 0 8px #fff, 0 0 12px #b30000;
+}
+
+body {
+  background-color: #f8fff8;
+}
+
+/* --- FUENTE PRINCIPAL: modo claro navideño --- */
+body {
+    font-family: 'Mountains of Christmas', cursive;
+}
+
+h1, h2 {
+    color: #b30000;
+    text-shadow: 2px 2px 4px #ffd700; /* brillo dorado */
+}
+
+/* --- MODO OSCURO: fuente y estilo sangriento --- */
+body.dark-mode {
+    font-family: 'Creepster', cursive;
+    background-color: #111;
+    color: #B4141E;
+}
+
+body.dark-mode h1, 
+body.dark-mode h2 {
+    color: #B4141E;
+    text-shadow: 0 0 10px #8b0000;
+    letter-spacing: 1px;
+}
+
+/* Copos de nieve: solo visibles en modo claro */
+body:not(.dark-mode) .snowflakes {
+    display: block;
+}
+
+body.dark-mode .snowflakes {
+    display: none; /* ocultar copos en modo oscuro */
+}
+
+/* Modo oscuro: gotas rojas animadas */
+body.dark-mode .blood-drops {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 9999;
+}
+
+/* estilo de cada gota */
+body.dark-mode .blood-drop {
+    position: absolute;
+    top: -10px;
+    width: 6px;
+    height: 12px;
+    background-color: #B4141E;
+    border-radius: 50%;
+    opacity: 0.8;
+    animation: fall-blood linear infinite;
+}
+
+/* animación caída */
+@keyframes fall-blood {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+    100% { transform: translateY(100vh) rotate(180deg); opacity: 0.6; }
+}
+
+/* generar variación para cada gota */
+body.dark-mode .blood-drop:nth-child(1) { left: 5%; animation-duration: 8s; animation-delay: 0s; }
+body.dark-mode .blood-drop:nth-child(2) { left: 15%; animation-duration: 10s; animation-delay: 1s; }
+body.dark-mode .blood-drop:nth-child(3) { left: 25%; animation-duration: 9s; animation-delay: 0.5s; }
+body.dark-mode .blood-drop:nth-child(4) { left: 35%; animation-duration: 12s; animation-delay: 0s; }
+body.dark-mode .blood-drop:nth-child(5) { left: 45%; animation-duration: 11s; animation-delay: 2s; }
+body.dark-mode .blood-drop:nth-child(6) { left: 55%; animation-duration: 8s; animation-delay: 1s; }
+body.dark-mode .blood-drop:nth-child(7) { left: 65%; animation-duration: 10s; animation-delay: 0.3s; }
+body.dark-mode .blood-drop:nth-child(8) { left: 75%; animation-duration: 9s; animation-delay: 2s; }
+body.dark-mode .blood-drop:nth-child(9) { left: 85%; animation-duration: 12s; animation-delay: 0.5s; }
+body.dark-mode .blood-drop:nth-child(10){ left: 95%; animation-duration: 11s; animation-delay: 1s; }
+
+/* --- MODO OSCURO: LETRAS SIN BRILLO --- */
+body.dark-mode {
+    font-family: 'Creepster', cursive;
+    background-color: #000; /* fondo negro */
+    color: #B4141E; /* letras rojo intenso */
+}
+
+/* Contenedores y cajas con fondo brillante */
+body.dark-mode .container,
+body.dark-mode .result-box,
+body.dark-mode .formula-original,
+body.dark-mode .nota-didactica {
+    background-color: #111; /* fondo oscuro de las cajas */
+    border: 1px solid #B4141E;
+    box-shadow: 0 0 20px #FF0000 inset; /* brillo interno rojo intenso */
+    color: #B4141E; /* letras sin brillo */
+}
+
+/* Inputs y botones */
+body.dark-mode input,
+body.dark-mode textarea {
+    background-color: #222;
+    color: #B4141E; /* letras sólidas */
+    border: 1px solid #FF0000;
+}
+
+body.dark-mode button {
+    background-color: #B4141E;
+    color: #fff;
+    border: 1px solid #FF0000;
+    box-shadow: 0 0 15px #FF0000 inset; /* brillo del botón */
+}
+
+body.dark-mode button:hover {
+    background-color: #FF0000;
+    box-shadow: 0 0 25px #FF0000 inset;
+}
+
+/* Tabla de resultados */
+body.dark-mode table {
+    background-color: #111;
+    color: #B4141E; /* letras sólidas */
+    border-color: #FF0000;
+}
+
+body.dark-mode table thead {
+    background-color: #220000;
+    color: #FF4444;
+}
+
+body.dark-mode table tbody tr:nth-child(even) {
+    background-color: #1a0000;
+}
+
+body.dark-mode table tbody tr:hover {
+    background-color: #330000;
+}
+
+/* Gotas de sangre */
+body.dark-mode .blood-drop {
+    background-color: #B4141E;
+    box-shadow: 0 0 10px #FF0000;
+    opacity: 0.9;
+}
+
+/* --- MODO CLARO NAVIDEÑO AJUSTADO --- */
+body {
+    font-family: 'Mountains of Christmas', cursive;
+    background-color: #f0f4f8; /* color más suave que blanco puro */
+    color: #2c3e50; /* texto principal oscuro para contraste */
+}
+
+/* Títulos */
+h1, h2 {
+    color: #b30000; /* rojo navideño */
+    text-shadow: 1px 1px 2px #ffd700; /* brillo dorado ligero */
+}
+
+/* Subtítulo */
+.subtitulo {
+    color: #2c3e50;
+    font-size: 1em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Contenedores y cajas de resultados */
+.container,
+.result-box,
+.formula-original,
+.nota-didactica {
+    background-color: #e0f7ff; /* azul cielo muy pálido */
+    border: 1px solid #b3d9ff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    color: #2c3e50; /* texto oscuro para legibilidad */
+}
+
+/* Inputs */
+input, textarea {
+    background-color: #e0f7ff; /* mismo azul cielo pálido */
+    color: #2c3e50;
+    border: 1px solid #b3d9ff;
+}
+
+/* Botones */
+button {
+    background-color: #3498db; /* azul navideño suave */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2980b9; /* azul más intenso al pasar el cursor */
+}
+
+/* Tablas */
+table {
+    background-color: #e0f7ff; /* azul cielo muy pálido */
+    color: #2c3e50;
+    border-collapse: collapse;
+}
+
+table th {
+    background-color: #b3d9ff;
+    color: #2c3e50;
+}
+
+table td, table th {
+    padding: 12px;
+    border: 1px solid #b3d9ff;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #d4f0ff; /* azul ligeramente distinto para filas pares */
+}
+
+table tbody tr:hover {
+    background-color: #c2e6ff;
+}
